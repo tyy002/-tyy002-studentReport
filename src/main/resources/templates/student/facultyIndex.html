@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-treeview.min.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/layui/layui.all.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-treeview.min.js}"></script>
+</head>
+<body>
+<div class="layui-container">  
+	 <div class="layui-btn-container" style="margin-top: 15px;">
+		 <div th:each="faculty:${facultyList}">
+		    <button type="button" class="layui-btn layui-btn-lg layui-btn-radius faculty" >[[${faculty.faculty}]]</button>
+		 </div>
+	  </div>
+</div>
+</body>
+<script type="text/javascript">
+$(document).on("click", ".faculty", function() {
+	var faculty=$(this).text();
+	layer.open({
+		   title: '<i class="layui-icon">&#xe642;</i>新增',
+     type : 2,
+     closeBtn: 1,
+     area: ['80%', '80%'],
+     shade: 0.8,
+     content: ['/student/showProfessionList?faculty='+faculty, 'yes'],
+     success : function(layero, index){
+ 
+     }
+ })
+})
+
+</script>
+
+</html>

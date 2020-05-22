@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+</head>
+<body>
+	
+    <div id="content">
+    <div class='alert alert-primary'  role='alert' id="result">[[${result}]]</div>
+	         <form  method="post" action="/execl/import_execlStudent"  enctype="multipart/form-data">
+				      <div class="modal-header">
+				        <h4 class="modal-title lr-5">数据导入</h4>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				      </div>
+				     <div class="modal-body">
+				     	<div class="layui-row">
+						    <div class="layui-col-xs4">
+							    <div class="layui-form-item" style="width:96%;margin-left:2%;dispkay:flex;">
+									  <label class="layui-form-label">文件：</label>
+								      <div class="layui-input-inline">
+								         <input type="file" id="files" name="file" />
+								      </div>
+							    </div>
+					    	</div>
+					    </div>  
+					</div>
+				      <div class="modal-footer">
+				        <button type="submit" class="btn btn-primary mb-2" onclick="on()">导入</button>
+				     </div>
+			     </form>
+	  	</div>
+	
+<!-- 	<button type="submit" class="btn btn-primary mb-2" onclick="export_studentExcel()" >导出</button> -->
+
+</body>
+<script type="text/javascript">
+function export_studentExcel() {
+	window.location.href="/execl/export_studentExcel";
+}
+function on() {
+	$("#result").val("正在导入数据。。。。。")
+}
+
+</script>
+</html>

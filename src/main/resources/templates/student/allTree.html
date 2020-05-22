@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-treeview.min.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/layui/layui.all.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript">
+layui.use(['tree', 'util'], function() {
+    var tree = layui.tree;
+    var util = layui.util;
+    $.ajax({
+        url: "/student/treeAllList",    
+        type: "post",
+        dataType:'json',
+        success: function(data){
+        	console.log(data)
+        	tree.render({
+                elem: '#dept_tree',
+                data: data,
+                id: 'treeId',
+                //nodes: convert(data),
+                onlyIconControl: true,
+                showLine: true,
+                accordion:true, 
+                lazy: true,  
+                icon: { //三种图标样式，更改几个都可以，用的是layui的图标
+					open: "&#xe7a0;", //节点打开的图标
+					close: "&#xe622;", //节点关闭的图标
+					end: "&#xe621;" //末尾节点的图标
+				},
+				color: { //三种图标颜色，独立配色，更改几个都可以
+					open: "#EE9A00", //节点图标打开的颜色
+					close: "#EEC591", //节点图标关闭的颜色
+					end: "#828282" //末级节点图标的颜色
+				},
+                click: function(obj){
+                	var data=obj.data;
+                	if(data.children.length==0){
+	                	layer.open({
+		           			  title: data.title+"班级",
+		           			  type : 2,
+		           			  closeBtn: 1,
+		           			  area: ['100%', '100%'],
+		           			  shade: 0.8,
+		           			  content: ['/student/getStudentListByTeam?team='+data.name, 'yes'],
+		           			  success : function(layero, index){
+	           		  	 	  }
+	           			})
+                	}
+                },
+            });
+        	/* $(".layui-tree-txt").after("<span>(20/50)</span>"); */
+        }
+    });
+    
+    
+   /*  function convert(rows) {//默认三级  List<Tree>集合,Tree为树形结构的实体类
+        function exists(rows, parentId) {
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].id == parentId) return true;
+            }
+            return false;
+        }
+     
+        var nodes = [];
+        // get the top level nodes
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (!exists(rows, row.parentId)) {
+                nodes.push({
+                    id: row.kid,
+                    name: row.title,
+                    parent: null,
+                    allCount:row.allcount,
+                    reportCount:row.reportCount
+                });
+            }
+        }
+     console.log(nodes)
+        var toDo = [];
+        for (var i = 0; i < nodes.length; i++) {
+            toDo.push(nodes[i]);
+        }
+        console.log("toDo"+toDo)
+        while (toDo.length) {
+            var node = toDo.shift();   // the parent node
+            // get the children nodes
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                if (row.parentId == node.kid) {//这里修改自己需要的属性
+                    var child = {id: row.id, title: row.name+'('+row.allCount+')', parentId: node.kid};
+                    if (node.children) {
+                        node.children.push(child);
+                    } else {
+                        node.children = [child];
+                    }
+                    toDo.push(child);
+                }
+            }
+        }
+        return nodes;//layui nodes对象
+    } */
+    
+    
+});
+ 
+	/* $(function(){
+		 $.ajax({
+		        type: 'post',
+		        url:'/student/treeGetList',
+		        dataType:'json',
+		        success:function(data){
+		        	console.log(data)
+		        	var st="";
+		        	for(var i=0;i<data.length;i++){
+		        		st+='<div class="card">';
+		        		st+='<div class="card-header">';
+		        		st+='<h2 class="mb-0">';
+		        		st+='<button class="btn btn-link collapsed" type="button" data-toggle="collapse" th:data-target=#"'+data[i].kid+'" aria-expanded="true" >'+data[i].menuName+'</button>';
+		        		st+='</h2>';
+		        		st+='</div>';
+		        		if(data[i].childMenu){
+		        			st+='<div id="'+data[i].kid+'" class="collapse show" data-parent="#accordionExample">';
+		        			st+='<div class="card-body">';
+		        			st+='<ul class="list-group">';
+		        			for(var j=0;j<data[i].childMenu.length;j++){
+		        				st+=' <li class="list-group-item">'+data[i].childMenu[j].menuName+'</li>';
+		        			}
+		        			st+='</ul>';
+		        			st+='</div>';
+		        			st+='</div>';
+		        		}
+		        		st+='</div>';
+		        	}
+		        	$("#accordionExample").html(st);
+		        }
+		  }) 
+		  
+		  
+	}) */
+</script>
+</head>
+<body>
+ <div id="dept_tree">
+ 
+ 
+    </div>
+
+		<div class="accordion" id="accordionExample">
+		  	
+		</div>
+</body>
+</html>

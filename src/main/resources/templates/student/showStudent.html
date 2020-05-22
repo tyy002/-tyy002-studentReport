@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-treeview.min.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/layui/layui.all.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-treeview.min.js}"></script>
+<script type="text/javascript">
+var kid='[[${student.kid}]]';
+$(document).on("click", ".report", function() {
+	 layer.confirm('确认报到吗？',
+				function(index) {
+					$.ajax({
+					    url: "/student/update_reportStatusOne",
+					    data: {
+					        "kid": kid
+					    },
+					    type: 'post',
+					    dataType: 'json',
+					    success: function(value) {
+					    	if(value==200){
+					    		 location.reload();
+					    	}else{
+					    		 layer.msg('请稍后重试！', {
+							            icon: 1
+							        });
+					    	}
+					       
+					    }
+					});
+				});
+})
+$(document).on("click", "#chongzhi", function() {
+      window.location.reload();
+  })
+</script>
+</head>
+<body>
+<table class="layui-table">
+  <colgroup>
+    <col>
+    <col>
+    <col>
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th colspan="3" style="text-align: center;">个人信息 </th>
+      <th >
+       	  <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="chongzhi">
+		    <i class="layui-icon">&#xe669;</i>
+		  </button>
+      </th>
+    </tr> 
+  </thead>
+  <tbody>
+   <tr>
+      <td colspan="1">学校名称</td>
+      <td colspan="3">山西农业大学</td>
+    </tr>
+    <tr>
+      <td>姓名</td>
+      <td>[[${student.name}]]</td>
+      <td>性别</td>
+      <td>[[${student.sex}]]</td>
+    </tr>
+    <tr>
+      <td>学号</td>
+      <td>[[${student.studentID}]]</td>
+      <td>是否报到</td>
+      <td th:if="${student.reportStatus}=='未报到'"> <button type="button" class="layui-btn layui-btn-normal report">点击报到</button></td>
+      <td th:if="${student.reportStatus}=='待审核'" style="color: red;">[[${student.reportStatus}]]</td>
+      <td th:if="${student.reportStatus}=='已报到'" style="color: blue;">[[${student.reportStatus}]]</td>
+    </tr>
+    <tr>
+      <td>所属系院</td>
+      <td>[[${student.faculty}]]</td>
+      <td>年级</td>
+      <td>[[${student.grade}]]</td>
+    </tr>
+    <tr>
+      <td>专业名称</td>
+      <td>[[${student.profession}]]</td>
+      <td>班级</td>
+      <td>[[${student.team}]]</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
